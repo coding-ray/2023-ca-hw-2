@@ -13,15 +13,15 @@ main:
 count_leading_zeros:
     addi sp, sp, -4 
     sw ra, 0(sp)
-    mv t1, a0 # t1存右32bits
-    mv t0, a1 # t0存左32bits
+    mv t1, a0 # t1 = low 32bits
+    mv t0, a1 # t0 = high 32bits
 
 
     # x |= (x >> 1);
-    slli t2, t0, 31 # 左32bits 左移31位元
-    srli t3, t1, 1 # 右32bits 右移1位元
+    slli t2, t0, 31 # high 32bits shift left 31
+    srli t3, t1, 1 # low 32bits shift right 1
     or t3, t2, t3
-    srli t2, t0, 1 # 左32bits 右移1位元
+    srli t2, t0, 1 # high 32bits shift right 1
     or t0, t0, t2
     or t1, t1, t3
     # x |= (x >> 2);
@@ -71,7 +71,7 @@ count_leading_zeros:
     li t4, 0x55555555 # & 0x5555555555555555
     and t2, t2, t4
     and t3, t3, t4
-    sltu t5, t1, t3 #右32bit不足，要用左減1補
+    sltu t5, t1, t3 # t5 = borrow bit
     sub t0, t0, t2
     sub t0, t0, t5
     sub t1, t1, t3
@@ -87,8 +87,8 @@ count_leading_zeros:
     
     and t0, t0, t4 # x & 0x3333333333333333
     and t1, t1, t4
-    add t1, t1, t3 # 相加後存進x
-    sltu t5, t1, t3 # 進位確認
+    add t1, t1, t3 # add into x
+    sltu t5, t1, t3 # t5 = carry bit
     add t0, t0, t2 
     add t0, t0, t5
     
@@ -111,7 +111,7 @@ count_leading_zeros:
     or t3, t2, t3
     srli t2, t0, 8
     add t1, t1, t3
-    sltu t5, t1, t3 # 進位確認
+    sltu t5, t1, t3 # t5 = carry bit
     add t0, t0, t2
     add t0, t0, t5
     
@@ -121,7 +121,7 @@ count_leading_zeros:
     or t3, t2, t3
     srli t2, t0, 16
     add t1, t1, t3
-    sltu t5, t1, t3 # 進位確認
+    sltu t5, t1, t3 # t5 = carry bit
     add t0, t0, t2
     add t0, t0, t5
     
@@ -147,20 +147,20 @@ palindrome_detected:
     mv t1, a0
     mv t0, a1
     li t4, 2
-    rem t5, a2, t4 # 看要判斷的位元是奇還是偶, t5 = 是否為奇
-    div t4, a2, t4  # t4 = 輸入位元數/2
+    rem t5, a2, t4 # check input number = odd or even
+    div t4, a2, t4  # t4 = input bit number / 2
     add t4, t4, t5
-    # x >> 輸入位元數/2
+    # x >> input bit number / 2
     li t5, 32
     sub t4, t5, t4 # t4 = 32 - t4
     sll t2, t0, t4
     sub t4, t5, t4 # (32 - t4) back to t4
     srl t3, t1, t4
-    or t3, t2, t3 # t3 = 右移完成後
+    or t3, t2, t3 # t3 = shift right complete
     srl t2, t0, t4
-    # t0, t1, t4不能動到！！
+    # t0, t1, t4 don't use!!
     
-    # 數字反轉放到t2
+    # t2 = reversed number
     li t2, 0
     li t5, 0
     li t0, 31
@@ -169,17 +169,17 @@ palindrome_detected:
         andi t6, t6, 1
         slli t2, t2, 1
         or t2, t2, t6
-        addi t5, t5, 1 # 迴圈+1
-        bne t5, t0, reverse_loop
-    # 把尾巴的0蓋掉存到t3
+        addi t5, t5, 1 # loop + 1
+        blt t5, t0, reverse_loop
+    # t3 = shift right number of empty bits
     li t5,2
     li t3, 32
     div t5, a2, t5
     sub t5, t3, t5
     srl t3, t2, t5
     
-    # 開始做比較
-    sll t2, t1, t5 # t2 = 右半部位元
+    # check there is different bits or not
+    sll t2, t1, t5 # t2 = low bits
     srl t2, t2, t5
     
         

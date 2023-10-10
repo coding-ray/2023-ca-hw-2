@@ -183,10 +183,10 @@ palindrome_detected:
         blt t5, t0, reverse_loop
     # t3 = shift right number of empty bits
     # -------------print-------------------
-    mv a0, t2
-    li a7, 35
-    ecall
-    li a0 0b10001
+    # mv a0, t2
+    # li a7, 35
+    # ecall
+    # li a0 0b10001
     # --------------end---------------------
     li t5,2
     li t3, 32
@@ -194,10 +194,10 @@ palindrome_detected:
     sub t5, t3, t5
     srl t2, t2, t5
     # -------------print-------------------
-    mv a0, t2
-    li a7, 35
-    ecall
-    li a0 0b10001
+    # mv a0, t2
+    # li a7, 35
+    # ecall
+    # li a0 0b10001
     # -------------end----------------------
     
     # t3 = right half bit

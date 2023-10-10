@@ -6,9 +6,19 @@ main:
     jal ra, count_leading_zeros
     li a7, 1
     ecall
+
+    # check is palindrome or not
+    li a2, 64
+    sub a2, a2, a0
+    li a0 0b10001
+    li a1 0b0
+    jal ra, palindrome_detected
+    li a7, 1
+    ecall
+    
     # Exit program
     li a7, 10
-    ecall  
+    ecall   
     
 count_leading_zeros:
     addi sp, sp, -4 
@@ -172,15 +182,46 @@ palindrome_detected:
         addi t5, t5, 1 # loop + 1
         blt t5, t0, reverse_loop
     # t3 = shift right number of empty bits
+    # -------------print-------------------
+    mv a0, t2
+    li a7, 35
+    ecall
+    li a0 0b10001
+    # --------------end---------------------
     li t5,2
     li t3, 32
     div t5, a2, t5
     sub t5, t3, t5
-    srl t3, t2, t5
-    
-    # check there is different bits or not
-    sll t2, t1, t5 # t2 = low bits
     srl t2, t2, t5
+    # -------------print-------------------
+    mv a0, t2
+    li a7, 35
+    ecall
+    li a0 0b10001
+    # -------------end----------------------
+    
+    # t3 = right half bit
+    li t5,2
+    li t6, 32
+    mv t3, a0
+    div t5, a2, t5
+    sub t5, t6, t5
+    sll t3, t3, t5
+    srl t3, t3, t5
+    # -------------print-------------------
+    mv a0, t3
+    li a7, 35
+    ecall
+     # --------------end---------------------
+     
+    # compare different
+    beq t2, t3, isPalindrome
+    li a0, 0
+    jr ra
+    
+    isPalindrome:
+        li a0, 1
+        jr ra
     
         
     

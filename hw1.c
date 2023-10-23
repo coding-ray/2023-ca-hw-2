@@ -2,8 +2,9 @@
 #include <stdint.h>
 #include <stdio.h>
 
-// count how many zeros forwards input number
+// return the number of leading zeros in "input in binary"
 uint16_t count_leading_zeros(uint64_t x) {
+  // fill ones on the right of the first set bit (one)
   x |= (x >> 1);
   x |= (x >> 2);
   x |= (x >> 4);
@@ -11,55 +12,55 @@ uint16_t count_leading_zeros(uint64_t x) {
   x |= (x >> 16);
   x |= (x >> 32);
 
-  /* count ones (population count) */
-  x -= ((x >> 1) & 0x5555555555555555);
+  // count ones with population count
+  x -= (x >> 1) & 0x5555555555555555;
   x = ((x >> 2) & 0x3333333333333333) + (x & 0x3333333333333333);
   x = ((x >> 4) + x) & 0x0f0f0f0f0f0f0f0f;
-  x += (x >> 8);
-  x += (x >> 16);
-  x += (x >> 32);
-
-  return (64 - (x & 0x7f));
+  x += x >> 8;
+  x += x >> 16;
+  x += x >> 32;
+  return 64 - (x & 0x7f);
 }
 
-bool palindrome_detected(uint64_t x, int clz) {
-  /* tempX = left half of input x (use to reverse and check) */
-  uint64_t nob = (64 - clz);
-  uint64_t checkEven = nob % 2;
-  uint64_t tempX = (x >> (nob / 2));
-  tempX = (tempX >> checkEven);
-  printf("tempX1 = %lx\n", tempX);
-  /* tempY = right half of input x */
-  uint64_t leftShiftNum = (nob / 2) + checkEven + (64 - nob);
-  printf("leftShiftNum = %lu\n", leftShiftNum);
-  uint64_t tempY = (x << leftShiftNum);
-  tempY = (tempY >> leftShiftNum);
+bool is_palindrome(uint64_t x) {
+  uint64_t n_leading_zero = count_leading_zeros(x);
+  // n_bit = number of bits to detect palindrome
+  uint64_t n_bit = 64 - n_leading_zero;
+  uint64_t is_even = n_bit % 2;
 
-  /* reverse tempX */
-  uint64_t revTempX = 0x0;
-  uint64_t maskTempX = tempX;
+  // a = left half of input
+  uint64_t a = x >> (n_bit / 2 + is_even);
+  printf("a = 0x%lx\n", a);
+
+  // b = right half of input x
+  uint64_t n_left_shift = n_bit / 2 + is_even + (64 - n_bit);
+  printf("n_left_shift = %lu\n", n_left_shift);
+  uint64_t b = (x << n_left_shift) >> n_left_shift;
+
+  // reverse a
+  uint64_t reverse_a = 0;
+  uint64_t tmp_a = a;
   for (int i = 0; i < 64; i++) {
-    revTempX = (revTempX << 1);
-    revTempX |= maskTempX & 0x1;
-    maskTempX = (maskTempX >> 1);
+    reverse_a <<= 1;
+    reverse_a |= tmp_a & 1;
+    tmp_a >>= 1;
   }
-  revTempX = (revTempX >> leftShiftNum);
-  printf("revTempX = %lx, tempY =  %lx\n", revTempX, tempY);
-  /* check revTempX nd tempY same or not */
-  if (revTempX == tempY) {
+  reverse_a >>= n_left_shift;
+  printf("reverse_a = 0x%lx, b = 0x%lx\n", reverse_a, b);
+
+  if (reverse_a == b)
     return true;
-  } else {
+  else
     return false;
-  }
 }
 
 int main() {
-  uint64_t testA = 0x0000000000000000;  // 0 is palindrome
-  uint64_t testB = 0x0000000000000001;  // testB not palindrome
-  uint64_t testC = 0x00000C0000000003;  // testC is palindrome
-  uint64_t testD = 0x0F000000000000F0;  // testD not palindrome
-  printf("%d\n", palindrome_detected(testA, count_leading_zeros(testA)));
-  printf("%d\n", palindrome_detected(testB, count_leading_zeros(testB)));
-  printf("%d\n", palindrome_detected(testC, count_leading_zeros(testC)));
-  printf("%d\n", palindrome_detected(testD, count_leading_zeros(testD)));
+  uint64_t test_1 = 0x0000000000000000;  // palindrome
+  uint64_t test_2 = 0x0000000000000001;  // not palindrome
+  uint64_t test_3 = 0x00000C0000000003;  // palindrome
+  uint64_t test_4 = 0x0F000000000000F0;  // not palindrome
+  printf("%d\n\n", is_palindrome(test_1));
+  printf("%d\n\n", is_palindrome(test_2));
+  printf("%d\n\n", is_palindrome(test_3));
+  printf("%d\n", is_palindrome(test_4));
 }

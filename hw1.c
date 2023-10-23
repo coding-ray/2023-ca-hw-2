@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <iostream>
-#include <cstdio>   
+#include <stdio.h>
+#include <stdbool.h>
 
 
 // count how many zeros forwards input number
@@ -30,10 +30,10 @@ bool palindrome_detected(uint64_t x, int clz){
     uint64_t checkEven = nob % 2;
     uint64_t tempX = (x >> (nob / 2));
     tempX = (tempX >> checkEven);
-    printf("tempX1 = %llx\n", tempX);
+    printf("tempX1 = %lx\n", tempX);
     /* tempY = right half of input x */
     uint64_t leftShiftNum = (nob / 2) + checkEven + (64 - nob);
-    printf("leftShiftNum = %d\n", leftShiftNum);
+    printf("leftShiftNum = %lu\n", leftShiftNum);
     uint64_t tempY = (x << leftShiftNum);
     tempY = (tempY >> leftShiftNum);
 
@@ -47,7 +47,7 @@ bool palindrome_detected(uint64_t x, int clz){
         maskTempX = (maskTempX >> 1);
     }
     revTempX = (revTempX >> leftShiftNum);
-    printf("revTempX = %llx, tempY =  %llx\n", revTempX, tempY);
+    printf("revTempX = %lx, tempY =  %lx\n", revTempX, tempY);
     /* check revTempX nd tempY same or not */
     if (revTempX == tempY) {
         return true;

@@ -1,1 +1,8 @@
-hw1.exe
+# VS Code settings
+.vscode
+
+# rv32emu binary
+rv32emu
+
+# built files
+build

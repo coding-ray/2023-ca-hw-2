@@ -18,6 +18,6 @@ performance:
 
 s: size
 size:
-	@riscv-none-elf-size build/*.elf
 	@make --no-print-directory -f src/makefile \
 		CFLAGS="$(CFLAGS_S)" OBJS="$(OBJS_S)"
+	@riscv-none-elf-size build/*.elf

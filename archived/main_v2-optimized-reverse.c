@@ -1,3 +1,18 @@
+/* v2-optimized-reverse:
+ *   The version before any optimization
+ *
+ * Results of performance test:
+ *   n_instruction_retrieved: 727
+ *   result: 1       cycle count: 756
+ *   result: 0       cycle count: 735
+ *   result: 1       cycle count: 0
+ *   result: 0       cycle count: 851
+ *   average cycle count: 585.5 (780.6)
+ *
+ * Results of size test:
+ *    text    data     bss     dec     hex filename
+ *   54508    1876    1528   57912    e238 build/is_palindrome.elf
+ */
 #include <stdint.h>  // uint_16_t, uint64_t
 #include <stdio.h>   // printf
 

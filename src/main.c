@@ -6,7 +6,7 @@
 #ifdef __riscv_zicsr
 extern uint64_t get_cycles();
 extern uint64_t get_instret();
-#endif // __riscv_zicsr
+#endif  // __riscv_zicsr
 
 // return the number of leading zeros in "input in binary"
 uint16_t count_leading_zeros(uint64_t x) {
@@ -88,6 +88,6 @@ int main() {
     result = is_palindrome(test_cases[i]);
     printf("result: %d\n", result);
   }
-#endif // __riscv_zicsr
+#endif  // __riscv_zicsr
   return 0;
 }

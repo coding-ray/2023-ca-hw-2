@@ -1,15 +1,7 @@
-# Call this makefile by `make -f src/makefile` in the root working directory.
+# Call this makefile by `make -f src/makefile CFLAGS=... OBJS=...`
+# in the root working directory.
 
 CROSS_COMPILE = riscv-none-elf-
-
-# CFLAGS = -march=rv32i -mabi=ilp32 -Wall -Wextra -O0
-CFLAGS = -march=rv32i_zicsr -mabi=ilp32 -Wall -Wextra -O0
-# "zicsr" extension defines "__riscv_zicsr" in C
-
-OBJS = \
-	get-cycles.o \
-	get-instret.o \
-	main.o
 
 BIN = is_palindrome.elf
 

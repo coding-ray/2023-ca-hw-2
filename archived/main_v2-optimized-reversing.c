@@ -1,17 +1,20 @@
-/* v2-optimized-reverse:
- *   The version before any optimization
+/* v2-optimized-reversing:
+ *   This version optimizes the reversing of 64 bits.
  *
- * Results of performance test:
- *   n_instruction_retrieved: 727
- *   result: 1       cycle count: 756
- *   result: 0       cycle count: 735
- *   result: 1       cycle count: 0
- *   result: 0       cycle count: 851
- *   average cycle count: 585.5 (780.6)
+ * Results of performance tests:
+ *                      --------   CSR cycles of test cases   --------
+ *        n_inst_ret      1      2      3      4    avg    avg_nonzero
+ *   -O0         727    756    735      0    851    585            780
+ *   -O1         734    235      0      0      0     59            235
+ *   -O2         734    235      0      0      0     59            235
+ *   -O3         734    223      0      0      0     56            223
  *
- * Results of size test:
- *    text    data     bss     dec     hex filename
- *   54508    1876    1528   57912    e238 build/is_palindrome.elf
+ * Results of size tests:
+ *          text    data     bss     dec     hex
+ *   -O0   54296    1876    1528   57700    e164
+ *   -O1   52132    1876    1528   55536    d8f0
+ *   -O2   52128    1876    1528   55532    d8ec
+ *   -O3   53428    1876    1528   56832    de00
  */
 #include <stdint.h>  // uint_16_t, uint64_t
 #include <stdio.h>   // printf

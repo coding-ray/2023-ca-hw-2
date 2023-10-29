@@ -1,17 +1,20 @@
 /* v1-base:
- *   The version before any optimization
+ *   The version before any optimization.
  *
- * Results of performance test:
- *   n_instruction_retrieved: 720
- *   result: 1       cycle count: 3674
- *   result: 0       cycle count: 3653
- *   result: 1       cycle count: 0
- *   result: 0       cycle count: 3769
- *   average cycle count: 2774
+ * Results of performance tests:
+ *                     --------   CSR cycles of test cases   ---------
+ *        n_inst_ret      1      2      3      4    avg    avg_nonzero
+ *   -O0         720   3674   3653      0   3769   2773           3699
+ *   -O1         734    923      0      0      0    231            923
+ *   -O2         734    920      0      0      0    230            920
+ *   -O3         730    894      0      0      0    224            894
  *
- * Results of size test:
- *    text    data     bss     dec     hex filename
- *   53552    1876    1528   56956    de7c build/is_palindrome.elf
+ * Results of size tests:
+ *          text    data     bss     dec     hex
+ *   -O0   53340    1876    1528   56744    dda8
+ *   -O1   51860    1876    1528   55264    d7e0
+ *   -O2   51856    1876    1528   55260    d7dc
+ *   -O3   52872    1876    1528   56276    dbd4
  */
 #include <stdint.h>  // uint_16_t, uint64_t
 #include <stdio.h>   // printf

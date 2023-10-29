@@ -1,6 +1,12 @@
-#include <stdint.h> // uint_16_t, uint64_t
-#include <unistd.h> // write
+#include <stdint.h>  // uint_16_t, uint64_t
+#include <stdio.h>   // printf
+
 #define FD_STDOUT 1
+
+#ifdef __riscv_zicsr
+extern uint64_t get_cycles();
+extern uint64_t get_instret();
+#endif // __riscv_zicsr
 
 // return the number of leading zeros in "input in binary"
 uint16_t count_leading_zeros(uint64_t x) {
@@ -51,20 +57,37 @@ int is_palindrome(uint64_t x) {
     return 0;
 }
 
-void print_result(int result) {
-  char buffer[] = {'\0', '\n', '\0'};
-  buffer[0] = result ? '1' : '0';
-  write(FD_STDOUT, buffer, 4);
-}
-
 int main() {
-  uint64_t test_1 = 0x0000000000000000;  // palindrome
-  uint64_t test_2 = 0x0000000000000001;  // not palindrome
-  uint64_t test_3 = 0x00000C0000000003;  // palindrome
-  uint64_t test_4 = 0x0F000000000000F0;  // not palindrome
-  print_result(is_palindrome(test_1));
-  print_result(is_palindrome(test_2));
-  print_result(is_palindrome(test_3));
-  print_result(is_palindrome(test_4));
+  uint64_t test_cases[] = {
+      0x0000000000000000,  // palindrome
+      0x0000000000000001,  // not palindrome
+      0x00000C0000000003,  // palindrome
+      0x0F000000000000F0,  // not palindrome
+  };
+
+#ifdef __riscv_zicsr
+  // print number of instruction retrieved
+  uint64_t n_instruction_retrieved = get_instret();
+  printf("n_instruction_retrieved: %ld\n",
+         (uint32_t)(n_instruction_retrieved & 0xffffffff));
+
+  // measure the number of CSR cycles for each case
+  uint64_t t_old;
+  uint64_t t_new;
+  int result = 2;
+  for (int i = 0; i < 4; i++) {
+    t_old = get_cycles();
+    result = is_palindrome(test_cases[i]);
+    t_new = get_cycles();
+    printf("result: %d\t", result);
+    printf("cycle count: %llu\n", t_new - t_old);
+  }
+#else
+  int result = 2;
+  for (int i = 0; i < 4; i++) {
+    result = is_palindrome(test_cases[i]);
+    printf("result: %d\n", result);
+  }
+#endif // __riscv_zicsr
   return 0;
 }

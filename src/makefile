@@ -20,11 +20,10 @@ BIN = is_palindrome.elf
 
 all: clean make-build-dir $(BIN) run
 
-asm: build/asm/$(BIN) asm-run
+asm: clean-obj make-build-dir $(BIN) run
 
 make-build-dir:
-	@mkdir -p build/obj
-	@mkdir -p build/asm
+	@mkdir -p build/obj build/asm
 
 $(BIN): $(OBJS)
 	@$(CROSS_COMPILE)ld $(LDFLAGS) -o build/$@ -T src/main.ld $^
@@ -44,13 +43,8 @@ build/asm/%.s: src/%.c
 run: build/$(BIN)
 	./rv32emu $^
 
-# build/asm/$(BIN): $(addprefix build/asm/,$(OBJS))
-# 	$(CROSS_COMPILE)ld $(LDFLAGS) -o $@ -T src/main.ld $^
-
-# build/asm/%.o: build/asm/%.s
-# 	$(CROSS_COMPILE)as $(ASFLAGS) -o $@ $^
-
-# asm-run: build/asm/$(BIN)
-
 clean:
 	@$(RM) -rf build
+
+clean-obj:
+	@$(RM) -rf build/obj

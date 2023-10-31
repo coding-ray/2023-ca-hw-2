@@ -4,5 +4,6 @@
 # rv32emu binary
 rv32emu
 
-# built files
-build
+# built object files and ELF
+build/obj
+build/*.elf

@@ -17,7 +17,6 @@
  *   -O3   53428    1876    1528   56832    de00
  */
 #include <stdint.h>  // uint_16_t, uint64_t
-#include <stdio.h>   // printf
 
 #define FD_STDOUT 1
 
@@ -28,6 +27,7 @@
 #define INTERLEAVE_BY_16 0x0000FFFF0000FFFF
 
 #ifdef __riscv_zicsr
+#include <stdio.h>   // printf
 extern uint64_t get_cycles();
 extern uint64_t get_instret();
 #endif  // __riscv_zicsr
@@ -107,10 +107,8 @@ int main() {
     printf("cycle count: %llu\n", t_new - t_old);
   }
 #else
-  int result = 2;
   for (int i = 0; i < 4; i++) {
-    result = is_palindrome(test_cases[i]);
-    printf("result: %d\n", result);
+    is_palindrome(test_cases[i]);
   }
 #endif  // __riscv_zicsr
   return 0;

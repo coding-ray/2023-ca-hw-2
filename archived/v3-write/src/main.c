@@ -2,13 +2,13 @@
  *   This version optimizes the reversing of 64 bits.
  *
  * Results of performance tests:
- *                      ----------   CSR cycles of test cases   ----------
+ *                     -----------   CSR cycles of test cases   ----------
  *          n_inst_ret    1    2    3    4  avg  avg_nonzero -> percentage
  *   -O0            34  756  735    0  752  561          748        100.0%
  *   -O1            38  235    0    0    0   59          235         31.4%
  *   -O2            37  235    0    0    0   59          235         31.4%
- *   -O3            42  235    0    0    0   59          235         31.4%
- *   -Ofast         42  235    0    0    0   59          235         31.4%
+ *   -O3            42  223    0    0    0   59          235         29.8%
+ *   -Ofast         42  223    0    0    0   59          235         29.8%
  *   -Os    (undefined reference to memcpy, __ashldi3, __lshrdi3)
  *
  * Results of size tests:

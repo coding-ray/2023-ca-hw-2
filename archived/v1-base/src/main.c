@@ -2,19 +2,23 @@
  *   The version before any optimization.
  *
  * Results of performance tests:
- *                     --------   CSR cycles of test cases   ---------
- *        n_inst_ret      1      2      3      4    avg    avg_nonzero
- *   -O0         720   3674   3653      0   3769   2773           3699
- *   -O1         734    923      0      0      0    231            923
- *   -O2         734    920      0      0      0    230            920
- *   -O3         730    894      0      0      0    224            894
+ *                     -----------   CSR cycles of test cases   ----------
+ *          n_inst_ret    1    2    3    4  avg  avg_nonzero -> percentage
+ *   -O0           720 3674 3653    0 3769 2773         3699        100.0%
+ *   -O1           734  923    0    0    0  231          923         25.0%
+ *   -O2           734  920    0    0    0  230          920         24.9%
+ *   -O3           730  894    0    0    0  224          894         24.2%
+ *   -Ofast        730  894    0    0    0  224          894         24.2%
+ *   -Os           784  131    0    0    0  229          458         12.4%
  *
  * Results of size tests:
- *          text    data     bss     dec     hex
- *   -O0   53340    1876    1528   56744    dda8
- *   -O1   51860    1876    1528   55264    d7e0
- *   -O2   51856    1876    1528   55260    d7dc
- *   -O3   52872    1876    1528   56276    dbd4
+ *          text    data     bss     dec  percentage
+ *   -O0    8216    1372     840   10428      100.0%
+ *   -O1    6584    1372     840    8796       84.3%
+ *   -O2    6580    1372     840    8792       84.3%
+ *   -O3    6912    1372     840    9124       87.5%
+ *   -Ofast 6912    1372     840    9124       87.5%
+ *   -Os    6564    1372     840    8776       84.2%
  */
 #include <stdint.h>  // uint_16_t, uint64_t
 

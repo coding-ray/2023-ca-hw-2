@@ -2,19 +2,23 @@
  *   This version optimizes the reversing of 64 bits.
  *
  * Results of performance tests:
- *                      --------   CSR cycles of test cases   --------
- *        n_inst_ret      1      2      3      4    avg    avg_nonzero
- *   -O0         727    756    735      0    851    585            780
- *   -O1         734    235      0      0      0     59            235
- *   -O2         734    235      0      0      0     59            235
- *   -O3         734    223      0      0      0     56            223
+ *                     -----------   CSR cycles of test cases   ----------
+ *          n_inst_ret    1    2    3    4  avg  avg_nonzero -> percentage
+ *   -O0         727    756  735    0  851  585          780        100.0%
+ *   -O1         734    235    0    0    0   59          235         30.1%
+ *   -O2         734    235    0    0    0   59          235         30.1%
+ *   -O3         734    223    0    0    0   56          223         28.6%
+ *   -Ofast      734    223    0    0    0   56          223         28.6%
+ *   -Os         784    260  129    0    0   97          195         25.0%
  *
  * Results of size tests:
- *          text    data     bss     dec     hex
- *   -O0   54296    1876    1528   57700    e164
- *   -O1   52132    1876    1528   55536    d8f0
- *   -O2   52128    1876    1528   55532    d8ec
- *   -O3   53428    1876    1528   56832    de00
+ *          text    data     bss     dec  percentage
+ *   -O0    9172    1372     840   11384      100.0%
+ *   -O1    6856    1372     840    9068       79.7%
+ *   -O2    6852    1372     840    9064       79.6%
+ *   -O3    7184    1372     840    9396       82.5%
+ *   -Ofast 7184    1372     840    9396       82.5%
+ *   -Os    6820    1372     840    9032       79.3%
  */
 #include <stdint.h>  // uint_16_t, uint64_t
 
